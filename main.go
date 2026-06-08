@@ -51,9 +51,18 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() tea.View {
-	var titleStyle = lipgloss.NewStyle().
+	var styleTitle = lipgloss.NewStyle().
 		Bold(true).
-		Foreground(lipgloss.Color("#49bcff"))
+		Foreground(lipgloss.Color("#4DFFBE"))
+
+	var styleCursor = lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#F8B55F"))
+
+	var styleDoneTodo = lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#4DFFBE"))
+
+	var styleDefault = lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#ffffff"))
 
 	title := "Todo App"
 
@@ -66,20 +75,25 @@ func (m model) View() tea.View {
 	bottom := "╰" + strings.Repeat("─", width-2) + "╯"
 
 	s := top + "\n"
-	s += "│" + lipgloss.Place(width-2, 1, lipgloss.Center, lipgloss.Center, titleStyle.Render(title)) + "│\n"
+	s += "│" + lipgloss.Place(width-2, 1, lipgloss.Center, lipgloss.Center, styleTitle.Render(title)) + "│\n"
 	s += bottom + "\n"
 
 	for i, todo := range m.todos {
+
+		itemStyle := styleDefault
 		cursor := " "
+
 		if m.cursor == i {
-			cursor = ">"
+			cursor = styleCursor.Render(">")
 		}
-		checked := " "
+		
+		checked := "[ ]"
 		if m.selected[i] == true {
-			checked = "x"
+			checked = styleDoneTodo.Render("[X]")
+			itemStyle = styleDoneTodo
 		}
 
-		s += fmt.Sprintf("%s [%s] %s\n", cursor, checked, todo)
+		s += fmt.Sprintf("%s %s %s\n", cursor, checked, itemStyle.Render(todo))
 	}
 	return tea.NewView(s + "\n" + m.help.RenderShort() + "\n")
 }
