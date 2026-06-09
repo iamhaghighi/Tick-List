@@ -15,13 +15,30 @@ func (m model) headerView() string {
 		return ""
 	}
 
-	padding := m.ts.Width - lipgloss.Width(constants.AppName) - lipgloss.Width(constants.Version)
+	leftItems := []string{
+		ui.Title.Render(constants.AppName),
+	}
+	leftPart := strings.Join(leftItems, "  ") 
+
+	rightItems := []string{
+		ui.Version.Render(constants.Version),
+		ui.Version.Render(constants.GoVersion),
+		ui.Version.Render("Bubbletea v2"),
+	}
+	rightPart := strings.Join(rightItems, "  ")
+
+
+	leftWidth := lipgloss.Width(leftPart)
+	rightWidth := lipgloss.Width(rightPart)
+
+	padding := m.ts.Width - leftWidth - rightWidth
 	if padding < 0 {
 		padding = 0
 	}
-	
-	content := constants.AppName + strings.Repeat(" ", padding) + constants.Version
-	return ui.HeaderStyle.Render(content)
+
+	content := leftPart + strings.Repeat(" ", padding) + rightPart
+
+	return ui.HeaderStyle.Width(m.ts.Width).Render(content)
 }
 
 func (m model) View() tea.View {
@@ -41,12 +58,12 @@ func (m model) View() tea.View {
 		cursor := " "
 
 		if m.cursor == i {
-			cursor = ui.Cursor.Render("▶")
+			cursor = ui.Cursor.Render(">")
 		}
 
 		checked := "[ ]"
 		if m.selected[i] == true {
-			checked = ui.Completed.Render("[✓]")
+			checked = ui.Completed.Render("[X]")
 			itemStyle = ui.Completed
 		}
 
