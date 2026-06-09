@@ -1,0 +1,481 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+cmd/main.go
+go.mod
+internal/constants/constant.go
+internal/models/terminal_model.go
+internal/models/todo_model.go
+internal/models/todo_view.go
+internal/ui/components/header.go
+internal/ui/components/help.go
+internal/ui/style.go
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="internal/ui/components/header.go">
+package components
+
+import (
+	"todo_cli/internal/ui"
+
+	"charm.land/lipgloss/v2"
+)
+
+type HeaderItem struct {
+	Text  string
+	Style lipgloss.Style
+}
+
+type HeaderModel struct {
+	Left  []HeaderItem
+	Right []HeaderItem
+}
+
+func NewHeader() HeaderModel {
+	return HeaderModel{
+		Left: []HeaderItem{
+			{
+				Text:  "STATUS",
+				Style: ui.StatusStyle,
+			},
+			{
+				Text:  "Ravishing",
+				Style: ui.LeftItemStyle,
+			},
+		},
+		Right: []HeaderItem{
+			{
+				Text:  "UTF-8",
+				Style: ui.RightItemStyle,
+			},
+			{
+				Text:  "⚙",
+				Style: ui.IconStyle,
+			},
+			{
+				Text:  "Fish Cake",
+				Style: ui.RightItemStyle,
+			},
+		},
+	}
+}
+
+func (h HeaderModel) View(width int) string {
+	var leftParts []string
+	var rightParts []string
+
+	for _, item := range h.Left {
+		leftParts = append(leftParts, item.Style.Render(item.Text))
+	}
+
+	for _, item := range h.Right {
+		rightParts = append(rightParts, item.Style.Render(item.Text))
+	}
+
+	left := lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		leftParts...,
+	)
+
+	right := lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		rightParts...,
+	)
+
+	space := width -
+		lipgloss.Width(left) -
+		lipgloss.Width(right)
+
+	if space < 0 {
+		space = 0
+	}
+
+	fill := lipgloss.NewStyle().
+		Background(ui.HeaderBg).
+		Width(space).
+		Render("")
+
+	return lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		left,
+		fill,
+		right,
+	)
+}
+</file>
+
+<file path="cmd/main.go">
+package main
+
+import (
+	"fmt"
+	"os"
+	"todo_cli/internal/models"
+	tea "charm.land/bubbletea/v2"
+)
+
+func main() {
+	if len(os.Args) > 1 && (os.Args[1] == "--version" || os.Args[1] == "-v" || os.Args[1] == "version") {
+		fmt.Println("v1")
+		return
+	}
+
+	p := tea.NewProgram(models.NewModel())
+	if _, err := p.Run(); err != nil {
+		fmt.Printf("Error: %v", err)
+	}
+}
+</file>
+
+<file path="internal/models/terminal_model.go">
+package models
+
+type TerminalSizeModel struct {
+	Width  int
+	Height int
+}
+
+func NewTerminalSizeModel() TerminalSizeModel {
+	return TerminalSizeModel{
+		Width:  0,
+		Height: 0,
+	}
+}
+</file>
+
+<file path="internal/models/todo_model.go">
+package models
+
+import (
+	"todo_cli/internal/ui/components"
+
+	tea "charm.land/bubbletea/v2"
+)
+
+type model struct {
+	todos    []string
+	cursor   int
+	selected map[int]bool
+	help     components.Help
+	ts       TerminalSizeModel
+	header   components.HeaderModel
+}
+
+func NewModel() model {
+	return model{
+		todos:    []string{"Season 14", "Notepad", "Think About Future"},
+		selected: make(map[int]bool),
+		help:     components.NewHelpModel(),
+		header:   components.NewHeader(),
+	}
+}
+
+func (m model) Init() tea.Cmd {
+	return nil
+}
+
+func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	switch msg := msg.(type) {
+
+	case tea.WindowSizeMsg:
+		m.ts.Width = msg.Width
+		m.ts.Height = msg.Height
+		return m, nil
+
+	case tea.KeyMsg:
+		switch msg.String() {
+		case "q", "ctrl+c":
+			return m, tea.Quit
+		case "up", "k":
+			if m.cursor > 0 {
+				m.cursor--
+			}
+		case "down", "j":
+			if m.cursor < len(m.todos)-1 {
+				m.cursor++
+			}
+		case "enter", "space":
+			m.selected[m.cursor] = !m.selected[m.cursor]
+		}
+	}
+	return m, nil
+}
+</file>
+
+<file path="internal/ui/components/help.go">
+package components
+
+import (
+	"charm.land/bubbles/v2/help"
+	"charm.land/bubbles/v2/key"
+)
+
+type keyMap struct {
+	Up    key.Binding
+	Down  key.Binding
+	Enter key.Binding
+	Back  key.Binding
+	Help  key.Binding
+	Quit  key.Binding
+}
+
+func NewKeyMap() keyMap {
+	return keyMap{
+		Up: key.NewBinding(
+			key.WithKeys("up", "k"),
+			key.WithHelp("↑/k", "move up"),
+		),
+		Down: key.NewBinding(
+			key.WithKeys("down", "j"),
+			key.WithHelp("↓/j", "move down"),
+		),
+		Enter: key.NewBinding(
+			key.WithKeys("enter", " "),
+			key.WithHelp("enter", "select"),
+		),
+		Back: key.NewBinding(
+			key.WithKeys("esc", "b"),
+			key.WithHelp("esc/b", "back to menu"),
+		),
+		Help: key.NewBinding(
+			key.WithKeys("h"),
+			key.WithHelp("'h'", "toggle help"),
+		),
+		Quit: key.NewBinding(
+			key.WithKeys("q", "ctrl+c"),
+			key.WithHelp("'q'", "quit"),
+		),
+	}
+}
+
+func (k keyMap) ShortHelp() []key.Binding {
+	return []key.Binding{k.Up, k.Down, k.Enter, k.Quit}
+}
+
+func (k keyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{
+		{k.Up, k.Down},
+		{k.Enter, k.Back},
+		{k.Help, k.Quit},
+	}
+}
+
+type Help struct {
+	Model    help.Model
+	ShowHelp bool
+	Keys     keyMap
+}
+
+func NewHelpModel() Help {
+	return Help{
+		Model:    help.New(),
+		ShowHelp: false,
+		Keys:     NewKeyMap(),
+	}
+}
+
+func (h *Help) SetWidth(width int) {
+	h.Model.SetWidth(width)
+}
+
+func (h *Help) Toggle() {
+	h.ShowHelp = !h.ShowHelp
+}
+
+func (h *Help) Hide() {
+	h.ShowHelp = false
+}
+
+func (h Help) IsVisible() bool {
+	return h.ShowHelp
+}
+
+func (h Help) RenderFull() string {
+	return h.Model.FullHelpView(h.Keys.FullHelp())
+}
+
+func (h Help) RenderShort() string {
+	return h.Model.ShortHelpView(h.Keys.ShortHelp())
+}
+</file>
+
+<file path="go.mod">
+module todo_cli
+
+go 1.26.3
+
+require (
+	charm.land/bubbles/v2 v2.1.0
+	charm.land/bubbletea/v2 v2.0.7
+	charm.land/lipgloss/v2 v2.0.3
+)
+
+require (
+	github.com/charmbracelet/colorprofile v0.4.3 // indirect
+	github.com/charmbracelet/ultraviolet v0.0.0-20260525132238-948f4557a654 // indirect
+	github.com/charmbracelet/x/ansi v0.11.7 // indirect
+	github.com/charmbracelet/x/term v0.2.2 // indirect
+	github.com/charmbracelet/x/termios v0.1.1 // indirect
+	github.com/charmbracelet/x/windows v0.2.2 // indirect
+	github.com/clipperhouse/displaywidth v0.11.0 // indirect
+	github.com/clipperhouse/uax29/v2 v2.7.0 // indirect
+	github.com/lucasb-eyer/go-colorful v1.4.0 // indirect
+	github.com/mattn/go-runewidth v0.0.23 // indirect
+	github.com/muesli/cancelreader v0.2.2 // indirect
+	github.com/rivo/uniseg v0.4.7 // indirect
+	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
+	golang.org/x/sync v0.20.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
+)
+</file>
+
+<file path="internal/constants/constant.go">
+package constants
+
+const (
+	AppName = "Todo Management"
+	Version = "v1.0.0"
+	GoVersion = " Go 1.26.4"
+)
+</file>
+
+<file path="internal/models/todo_view.go">
+package models
+
+import (
+	"fmt"
+	"todo_cli/internal/ui"
+
+	tea "charm.land/bubbletea/v2"
+)
+
+func (m model) View() tea.View {
+	s := tea.NewView("")
+	s.AltScreen = true
+
+	if m.ts.Width == 0 {
+		s.SetContent("Loading...")
+		return s
+	}
+
+	mainContent := m.header.View(m.ts.Width)
+	mainContent += "\n\n"
+
+	for i, todo := range m.todos {
+
+		itemStyle := ui.Task
+		cursor := " "
+
+		if m.cursor == i {
+			cursor = ui.Cursor.Render(">")
+		}
+
+		checked := "[ ]"
+		if m.selected[i] == true {
+			checked = ui.Completed.Render("[X]")
+			itemStyle = ui.Completed
+		}
+
+		mainContent += fmt.Sprintf("%s %s %s\n", cursor, checked, itemStyle.Render(todo))
+	}
+	s.SetContent(mainContent + "\n" + m.help.RenderShort())
+	return s
+}
+</file>
+
+<file path="internal/ui/style.go">
+package ui
+
+import "charm.land/lipgloss/v2"
+
+var (
+	Title = lipgloss.NewStyle().
+		Background(lipgloss.Color("#8B008B")). // پس‌زمینه بنفش تیره
+		Foreground(lipgloss.Color("#FFFFFF")). // متن سفید
+		Bold(true)
+
+	Version = lipgloss.NewStyle().
+		Background(lipgloss.Color("#3181fa")). // پس‌زمینه صورتی گرم
+		Foreground(lipgloss.Color("#1A1A1A")). // متن تیره
+		Bold(true)
+
+	Cursor = lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#F8B55F"))
+
+	Task = lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#ffffff"))
+
+	Completed = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#4DFFBE")).
+			Strikethrough(true)
+
+	// header style
+
+	HeaderBg = lipgloss.Color("#3A3A3A")
+
+	StatusStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#FFFFFF")).
+			Background(lipgloss.Color("#FF4F7A")).
+			Bold(true).
+			Padding(0, 1)
+
+	LeftItemStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#D8D8D8")).
+			Background(HeaderBg).
+			Padding(0, 1)
+
+	RightItemStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#FFFFFF")).
+			Background(lipgloss.Color("#A855F7")).
+			Padding(0, 1)
+
+	IconStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#FFFFFF")).
+			Background(lipgloss.Color("#7C3AED")).
+			Padding(0, 1)
+)
+</file>
+
+</files>

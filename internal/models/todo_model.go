@@ -7,18 +7,18 @@ import (
 )
 
 type model struct {
-	todos    []string
-	cursor   int
-	selected map[int]bool
-	help     components.Help
-	ts       TerminalSizeModel
+	todo   TodoModel
+	help   components.Help
+	header components.HeaderModel
+	ts     TerminalSizeModel
 }
 
 func NewModel() model {
 	return model{
-		todos:    []string{"Season 14", "Notepad", "Think About Future"},
-		selected: make(map[int]bool),
-		help:     components.NewHelpModel(),
+		todo:   NewTodoModel(),
+		help:   components.NewHelpModel(),
+		header: components.NewHeader(),
+		ts: NewTerminalSizeModel(),
 	}
 }
 
@@ -39,15 +39,15 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "q", "ctrl+c":
 			return m, tea.Quit
 		case "up", "k":
-			if m.cursor > 0 {
-				m.cursor--
+			if m.todo.cursor > 0 {
+				m.todo.cursor--
 			}
 		case "down", "j":
-			if m.cursor < len(m.todos)-1 {
-				m.cursor++
+			if m.todo.cursor < len(m.todo.todos)-1 {
+				m.todo.cursor++
 			}
 		case "enter", "space":
-			m.selected[m.cursor] = !m.selected[m.cursor]
+			m.todo.selected[m.todo.cursor] = !m.todo.selected[m.todo.cursor]
 		}
 	}
 	return m, nil

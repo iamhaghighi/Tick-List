@@ -2,28 +2,49 @@ package ui
 
 import "charm.land/lipgloss/v2"
 
-var HeaderStyle = lipgloss.NewStyle().
-	Background(lipgloss.Color("#f29af5")).
-	Height(1)
+var (
+	Title = lipgloss.NewStyle().
+		Background(lipgloss.Color("#8B008B")). // پس‌زمینه بنفش تیره
+		Foreground(lipgloss.Color("#FFFFFF")). // متن سفید
+		Bold(true)
 
-var Title = lipgloss.NewStyle().
-	Background(lipgloss.Color("#8B008B")). // پس‌زمینه بنفش تیره
-	Foreground(lipgloss.Color("#FFFFFF")). // متن سفید
-	Bold(true).
-	Padding(0, 1) // چپ و راست ۱ فاصله
+	Version = lipgloss.NewStyle().
+		Background(lipgloss.Color("#3181fa")). // پس‌زمینه صورتی گرم
+		Foreground(lipgloss.Color("#1A1A1A")). // متن تیره
+		Bold(true)
 
-var Version = lipgloss.NewStyle().
-	Background(lipgloss.Color("#FF69B4")). // پس‌زمینه صورتی گرم
-	Foreground(lipgloss.Color("#1A1A1A")). // متن تیره
-	Bold(true).
-	Padding(0, 1) // چپ و راست ۱ فاصله
+	Cursor = lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#F8B55F"))
 
-var Cursor = lipgloss.NewStyle().
-	Foreground(lipgloss.Color("#F8B55F"))
+	Task = lipgloss.NewStyle().
+		Foreground(lipgloss.Color("#ffffff"))
 
-var Task = lipgloss.NewStyle().
-	Foreground(lipgloss.Color("#ffffff"))
+	Completed = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#4DFFBE")).
+			Strikethrough(true)
 
-var Completed = lipgloss.NewStyle().
-	Foreground(lipgloss.Color("#4DFFBE")).
-	Strikethrough(true)
+	// header style
+
+	HeaderBg = lipgloss.Color("#3A3A3A")
+
+	StatusStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#FFFFFF")).
+			Background(lipgloss.Color("#FF4F7A")).
+			Bold(true).
+			Padding(0, 1)
+
+	LeftItemStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#D8D8D8")).
+			Background(HeaderBg).
+			Padding(0, 1)
+
+	RightItemStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#FFFFFF")).
+			Background(lipgloss.Color("#A855F7")).
+			Padding(0, 1)
+
+	IconStyle = lipgloss.NewStyle().
+			Foreground(lipgloss.Color("#FFFFFF")).
+			Background(lipgloss.Color("#7C3AED")).
+			Padding(0, 1)
+)
