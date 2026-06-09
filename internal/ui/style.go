@@ -3,7 +3,7 @@ package ui
 import "charm.land/lipgloss/v2"
 
 var HeaderStyle = lipgloss.NewStyle().
-	Background(lipgloss.Color("#9af5d3")). // رنگ آبی ویندوز
+	Background(lipgloss.Color("#f29af5")). // رنگ آبی ویندوز
 	Foreground(lipgloss.Color("#000")).
 	Bold(true).
 	Height(1)
@@ -20,4 +20,5 @@ var Task = lipgloss.NewStyle().
 	Foreground(lipgloss.Color("#ffffff"))
 
 var Completed = lipgloss.NewStyle().
-	Foreground(lipgloss.Color("#4DFFBE"))
+	Foreground(lipgloss.Color("#4DFFBE")).
+	Strikethrough(true)

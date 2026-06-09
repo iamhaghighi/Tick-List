@@ -20,7 +20,7 @@ func (m model) headerView() string {
 		padding = 0
 	}
 	
-	content := ui.Title.Render(constants.AppName) + strings.Repeat(" ", padding) + constants.Version
+	content := constants.AppName + strings.Repeat(" ", padding) + constants.Version
 	return ui.HeaderStyle.Render(content)
 }
 
@@ -41,12 +41,12 @@ func (m model) View() tea.View {
 		cursor := " "
 
 		if m.cursor == i {
-			cursor = ui.Cursor.Render(">")
+			cursor = ui.Cursor.Render("▶")
 		}
 
 		checked := "[ ]"
 		if m.selected[i] == true {
-			checked = ui.Completed.Render("[X]")
+			checked = ui.Completed.Render("[✓]")
 			itemStyle = ui.Completed
 		}
 
