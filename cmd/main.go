@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"todo_cli/internal/constants"
 	"todo_cli/internal/models"
 
 	tea "charm.land/bubbletea/v2"
@@ -10,7 +11,7 @@ import (
 
 func main() {
 	if len(os.Args) > 1 && (os.Args[1] == "--version" || os.Args[1] == "-v" || os.Args[1] == "version") {
-		fmt.Println("v1")
+		fmt.Println("Todo Cli Management " + constants.Version)
 		return
 	}
 
