@@ -3,48 +3,56 @@ package ui
 import "charm.land/lipgloss/v2"
 
 var (
-	Title = lipgloss.NewStyle().
-		Background(lipgloss.Color("#8B008B")). // پس‌زمینه بنفش تیره
-		Foreground(lipgloss.Color("#FFFFFF")). // متن سفید
-		Bold(true)
+	//* COLORS
+	mainColor   = lipgloss.Color("#BCE29E") // primary brand color
+	accentColor = lipgloss.Color("#FF8787") // action / highlight
+	MutedColor  = lipgloss.Color("#E5EBB2") // secondary / borders
+	BgColor     = lipgloss.Color("#F8C4B4") // background / surfaces
 
-	Version = lipgloss.NewStyle().
-		Background(lipgloss.Color("#3181fa")). // پس‌زمینه صورتی گرم
-		Foreground(lipgloss.Color("#1A1A1A")). // متن تیره
-		Bold(true)
+	BlackColor = lipgloss.Color("#222222")
+	WhiteColor = lipgloss.Color("#D8D8D8")
 
+	HeaderBgColor = lipgloss.Color("#3A3A3A")
+
+	golangColor = lipgloss.Color("#00ADD8")
+
+	// completed = #4DFFBE
+)
+
+var (
 	Cursor = lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#F8B55F"))
+		Foreground(MutedColor)
 
 	Task = lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#ffffff"))
+		Foreground(lipgloss.Darken(WhiteColor, 0.3))
+
+	TaskHover = lipgloss.NewStyle().
+		Foreground(WhiteColor)
 
 	Completed = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#4DFFBE")).
+			Foreground(mainColor).
 			Strikethrough(true)
 
 	// header style
 
-	HeaderBg = lipgloss.Color("#3A3A3A")
-
 	StatusStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#FFFFFF")).
-			Background(lipgloss.Color("#FF4F7A")).
+			Foreground(BlackColor).
+			Background(mainColor).
 			Bold(true).
 			Padding(0, 1)
 
 	LeftItemStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#D8D8D8")).
-			Background(HeaderBg).
+			Foreground(WhiteColor).
+			Background(HeaderBgColor).
 			Padding(0, 1)
 
 	RightItemStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#FFFFFF")).
-			Background(lipgloss.Color("#A855F7")).
+			Foreground(BlackColor).
+			Background(MutedColor).
 			Padding(0, 1)
 
-	IconStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#FFFFFF")).
-			Background(lipgloss.Color("#7C3AED")).
+	GolangStyle = lipgloss.NewStyle().
+			Foreground(BlackColor).
+			Background(golangColor).
 			Padding(0, 1)
 )

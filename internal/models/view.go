@@ -24,13 +24,14 @@ func (m model) View() tea.View {
 		itemStyle := ui.Task
 		cursor := " "
 
-		if m.todo.cursor == i {
-			cursor = ui.Cursor.Render(">")
+		if m.cursor == i {
+			itemStyle = ui.TaskHover
+			cursor = ui.Cursor.Render("▶")
 		}
 
 		checked := "[ ]"
 		if m.todo.selected[i] == true {
-			checked = ui.Completed.Render("[X]")
+			checked = ui.Completed.UnsetStrikethrough().Render("[✓]")
 			itemStyle = ui.Completed
 		}
 

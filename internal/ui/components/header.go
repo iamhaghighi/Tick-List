@@ -1,6 +1,7 @@
 package components
 
 import (
+	"todo_cli/internal/constants"
 	"todo_cli/internal/ui"
 
 	"charm.land/lipgloss/v2"
@@ -12,33 +13,29 @@ type HeaderItem struct {
 }
 
 type HeaderModel struct {
-	Left  []HeaderItem
-	Right []HeaderItem
+	LeftHeader  []HeaderItem
+	RightHeader []HeaderItem
 }
 
 func NewHeader() HeaderModel {
 	return HeaderModel{
-		Left: []HeaderItem{
+		LeftHeader: []HeaderItem{
 			{
-				Text:  "Todo Management",
+				Text:  constants.AppName,
 				Style: ui.StatusStyle,
 			},
 			{
-				Text:  "A Fast, lightweight Cli",
+				Text:  constants.Description,
 				Style: ui.LeftItemStyle,
 			},
 		},
-		Right: []HeaderItem{
+		RightHeader: []HeaderItem{
 			{
-				Text:  "UTF-8",
-				Style: ui.RightItemStyle,
+				Text:  constants.GoVersion,
+				Style: ui.GolangStyle,
 			},
 			{
-				Text:  "⚙",
-				Style: ui.IconStyle,
-			},
-			{
-				Text:  "Fish Cake",
+				Text:  constants.Version,
 				Style: ui.RightItemStyle,
 			},
 		},
@@ -49,11 +46,11 @@ func (h HeaderModel) View(width int) string {
 	var leftParts []string
 	var rightParts []string
 
-	for _, item := range h.Left {
+	for _, item := range h.LeftHeader {
 		leftParts = append(leftParts, item.Style.Render(item.Text))
 	}
 
-	for _, item := range h.Right {
+	for _, item := range h.RightHeader {
 		rightParts = append(rightParts, item.Style.Render(item.Text))
 	}
 
@@ -76,7 +73,7 @@ func (h HeaderModel) View(width int) string {
 	}
 
 	fill := lipgloss.NewStyle().
-		Background(ui.HeaderBg).
+		Background(ui.HeaderBgColor).
 		Width(space).
 		Render("")
 
