@@ -1,4 +1,4 @@
-package components
+package help
 
 import (
 	"charm.land/bubbles/v2/help"
@@ -55,40 +55,40 @@ func (k keyMap) FullHelp() [][]key.Binding {
 	}
 }
 
-type Help struct {
+type Model struct {
 	Model    help.Model
 	ShowHelp bool
 	Keys     keyMap
 }
 
-func NewHelpModel() Help {
-	return Help{
+func NewHelpModel() Model {
+	return Model{
 		Model:    help.New(),
 		ShowHelp: false,
 		Keys:     NewKeyMap(),
 	}
 }
 
-func (h *Help) SetWidth(width int) {
+func (h *Model) SetWidth(width int) {
 	h.Model.SetWidth(width)
 }
 
-func (h *Help) Toggle() {
+func (h *Model) Toggle() {
 	h.ShowHelp = !h.ShowHelp
 }
 
-func (h *Help) Hide() {
+func (h *Model) Hide() {
 	h.ShowHelp = false
 }
 
-func (h Help) IsVisible() bool {
+func (h Model) IsVisible() bool {
 	return h.ShowHelp
 }
 
-func (h Help) RenderFull() string {
+func (h Model) RenderFull() string {
 	return h.Model.FullHelpView(h.Keys.FullHelp())
 }
 
-func (h Help) RenderShort() string {
+func (h Model) RenderShort() string {
 	return h.Model.ShortHelpView(h.Keys.ShortHelp())
 }

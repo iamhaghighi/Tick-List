@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"todo_cli/internal/app"
 	"todo_cli/internal/constants"
-	"todo_cli/internal/models"
 
 	tea "charm.land/bubbletea/v2"
 )
@@ -15,7 +15,7 @@ func main() {
 		return
 	}
 
-	p := tea.NewProgram(models.NewModel())
+	p := tea.NewProgram(app.NewModel())
 	if _, err := p.Run(); err != nil {
 		fmt.Printf("Error: %v", err)
 	}
