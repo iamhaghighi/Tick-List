@@ -3,56 +3,65 @@ package ui
 import "charm.land/lipgloss/v2"
 
 var (
-	//* COLORS
-	mainColor   = lipgloss.Color("#BCE29E") // primary brand color
-	accentColor = lipgloss.Color("#FF8787") // action / highlight
-	MutedColor  = lipgloss.Color("#E5EBB2") // secondary / borders
-	BgColor     = lipgloss.Color("#F8C4B4") // background / surfaces
+	primary   = "#BCE29E"
+	secondary = "#D1E8E4"
 
-	BlackColor = lipgloss.Color("#222222")
-	WhiteColor = lipgloss.Color("#D8D8D8")
+	accent = "#FF8787"
 
-	HeaderBgColor = lipgloss.Color("#3A3A3A")
+	Dark   = "#222222"
+	Medium = "#3A3A3A"
+	Light  = "#e0e0e0"
 
-	golangColor = lipgloss.Color("#00ADD8")
-
-	// completed = #4DFFBE
+	Golang = "#00ADD8"
 )
 
 var (
+	TextPrimaryColor   = lipgloss.Color(Light)
+	TextSecondaryColor = lipgloss.Color(Dark)
+
+	BgTitleColor  = lipgloss.Color(primary)
+	BgHeaderColor = lipgloss.Color(Medium)
+
+	StatusCompleted = lipgloss.Color(primary)
+	CursorColor     = lipgloss.Color(secondary)
+
+	GolangColor = lipgloss.Color(Golang)
+)
+
+var (
+	// view style
 	Cursor = lipgloss.NewStyle().
-		Foreground(MutedColor)
+		Foreground(CursorColor)
 
 	Task = lipgloss.NewStyle().
-		Foreground(lipgloss.Darken(WhiteColor, 0.3))
+		Foreground(lipgloss.Darken(TextPrimaryColor, 0.3))
 
 	TaskHover = lipgloss.NewStyle().
-		Foreground(WhiteColor)
+			Foreground(TextPrimaryColor)
 
 	Completed = lipgloss.NewStyle().
-			Foreground(mainColor).
+			Foreground(BgTitleColor).
 			Strikethrough(true)
 
 	// header style
-
-	StatusStyle = lipgloss.NewStyle().
-			Foreground(BlackColor).
-			Background(mainColor).
+	TitleStyle = lipgloss.NewStyle().
+			Foreground(TextSecondaryColor).
+			Background(BgTitleColor).
 			Bold(true).
 			Padding(0, 1)
 
-	LeftItemStyle = lipgloss.NewStyle().
-			Foreground(WhiteColor).
-			Background(HeaderBgColor).
-			Padding(0, 1)
+	DescriptionStyle = lipgloss.NewStyle().
+				Foreground(TextPrimaryColor).
+				Background(BgHeaderColor).
+				Padding(0, 1)
 
-	RightItemStyle = lipgloss.NewStyle().
-			Foreground(BlackColor).
-			Background(MutedColor).
+	VersionStyle = lipgloss.NewStyle().
+			Foreground(TextSecondaryColor).
+			Background(CursorColor).
 			Padding(0, 1)
 
 	GolangStyle = lipgloss.NewStyle().
-			Foreground(BlackColor).
-			Background(golangColor).
+			Foreground(TextSecondaryColor).
+			Background(GolangColor).
 			Padding(0, 1)
 )

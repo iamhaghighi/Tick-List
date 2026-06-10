@@ -1,8 +1,8 @@
 package constants
 
 const (
-	AppName = "Todo Management"
-	Description = "A Fast, lightweight Todo"
-	Version = "v1.0.0"
-	GoVersion = " Go 1.26.4"
+	APP_NAME    = "Todo Management"
+	DESCRIPTION = "A Fast, lightweight Todo"
+	VERSION     = "v1.0.0"
+	GO_VERSION  = " Go 1.26.4"
 )

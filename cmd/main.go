@@ -11,7 +11,7 @@ import (
 
 func main() {
 	if len(os.Args) > 1 && (os.Args[1] == "--version" || os.Args[1] == "-v" || os.Args[1] == "version") {
-		fmt.Println("Todo Cli Management " + constants.Version)
+		fmt.Println("Todo Cli Management " + constants.VERSION)
 		return
 	}
 

@@ -21,22 +21,22 @@ func NewHeader() HeaderModel {
 	return HeaderModel{
 		LeftHeader: []HeaderItem{
 			{
-				Text:  constants.AppName,
-				Style: ui.StatusStyle,
+				Text:  constants.APP_NAME,
+				Style: ui.TitleStyle,
 			},
 			{
-				Text:  constants.Description,
-				Style: ui.LeftItemStyle,
+				Text:  constants.DESCRIPTION,
+				Style: ui.DescriptionStyle,
 			},
 		},
 		RightHeader: []HeaderItem{
 			{
-				Text:  constants.GoVersion,
+				Text:  constants.GO_VERSION,
 				Style: ui.GolangStyle,
 			},
 			{
-				Text:  constants.Version,
-				Style: ui.RightItemStyle,
+				Text:  constants.VERSION,
+				Style: ui.VersionStyle,
 			},
 		},
 	}
@@ -73,7 +73,7 @@ func (h HeaderModel) View(width int) string {
 	}
 
 	fill := lipgloss.NewStyle().
-		Background(ui.HeaderBgColor).
+		Background(ui.BgHeaderColor).
 		Width(space).
 		Render("")
 
