@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	if len(os.Args) > 1 && (os.Args[1] == "--version" || os.Args[1] == "-v" || os.Args[1] == "version") {
+	if len(os.Args) > 1 && (os.Args[1] == "--version" || os.Args[1] == "-v" || os.Args[1] == "version" || os.Args[1] == "v") {
 		fmt.Println("Todo Cli Management " + constants.VERSION)
 		return
 	}
