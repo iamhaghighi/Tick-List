@@ -5,6 +5,8 @@ import (
 	"os"
 	"todo_cli/internal/app"
 	"todo_cli/internal/constants"
+	"todo_cli/internal/repository/sqlite"
+	"todo_cli/internal/service"
 
 	tea "charm.land/bubbletea/v2"
 )
@@ -15,7 +17,14 @@ func main() {
 		return
 	}
 
-	p := tea.NewProgram(app.NewModel())
+	repo, err := sqlite.New("todo.db")
+	if err != nil {
+		panic(err)
+	}
+
+	todoService := service.NewTodoService(repo)
+
+	p := tea.NewProgram(app.NewModel(todoService))
 	if _, err := p.Run(); err != nil {
 		fmt.Printf("Error: %v", err)
 	}

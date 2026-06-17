@@ -2,6 +2,7 @@ package app
 
 import (
 	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 func (m model) View() tea.View {
@@ -13,13 +14,23 @@ func (m model) View() tea.View {
 		return s
 	}
 
-	content := m.header.View(m.width)
-	content += "\n\n"
-	content += m.todo.View()
-	content += "\n\n"
-	content += m.help.RenderShort()
-	content += "\n\n"
-	s.SetContent(content)
+	// content := m.header.View(m.width)
+	// content += "\n\n"
+	// content += m.todo.View()
+	// content += "\n\n"
+	// content += m.help.RenderShort()
+	// content += "\n\n"
+
+	con := lipgloss.JoinVertical(
+		lipgloss.Left,
+		m.header.View(m.width),
+		"",
+		m.todo.View(),
+		"",
+		m.help.RenderShort(),
+	)
+
+	s.SetContent(con)
 
 	return s
 }

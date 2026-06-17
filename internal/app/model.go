@@ -4,6 +4,7 @@ import (
 	"todo_cli/internal/components/header"
 	"todo_cli/internal/components/help"
 	"todo_cli/internal/components/todo"
+	"todo_cli/internal/service"
 
 	tea "charm.land/bubbletea/v2"
 )
@@ -12,14 +13,14 @@ type model struct {
 	width  int
 	height int
 
-	todo   todo.Model
+	todo   todo.State
 	help   help.Model
 	header header.Model
 }
 
-func NewModel() model {
+func NewModel(service *service.TodoService) model {
 	return model{
-		todo:   todo.NewTodoModel(),
+		todo:   todo.NewTodoModel(service),
 		help:   help.NewHelpModel(),
 		header: header.NewHeader(),
 	}

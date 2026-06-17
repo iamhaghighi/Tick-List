@@ -5,7 +5,7 @@ import (
 	"todo_cli/internal/styles"
 )
 
-func (m Model) View() string {
+func (m State) View() string {
 	mainContent := ""
 	for i, todo := range m.Items {
 

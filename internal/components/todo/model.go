@@ -1,38 +1,38 @@
 package todo
 
-type Item struct {
-	Title string
-	Done  bool
+import (
+	"todo_cli/internal/domain"
+	"todo_cli/internal/service"
+)
+
+type State struct {
+	Cursor  int
+	Items   []domain.Todo
+	Service *service.TodoService
 }
 
-type Model struct {
-	Items  []Item
-	Cursor int
-}
-
-func NewTodoModel() Model {
-	return Model{
-		Items: []Item{
-			{Title: "Jackal 1"},
-			{Title: "Jackal 2"},
-			{Title: "Jackal 3"},
-			{Title: "Jackal 4"},
-		},
+func NewTodoModel(service *service.TodoService) State {
+	// TODO: add error and log
+	todos, _ := service.GetAll()
+	return State{
+		Items: todos,
+		Service: service,
 	}
 }
 
-func (m *Model) CursorMoveUp() {
+// todo: move to todo service. all of down there 
+func (m *State) CursorMoveUp() {
 	if m.Cursor > 0 {
 		m.Cursor--
 	}
 }
 
-func (m *Model) CursorMoveDown() {
+func (m *State) CursorMoveDown() {
 	if m.Cursor < len(m.Items)-1 {
 		m.Cursor++
 	}
 }
 
-func (m *Model) DoneToggle() {
+func (m *State) DoneToggle() {
 	m.Items[m.Cursor].Done = !m.Items[m.Cursor].Done
 }
