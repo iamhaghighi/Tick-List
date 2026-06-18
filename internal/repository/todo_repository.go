@@ -1,10 +1,13 @@
 package repository
 
-import "todo_cli/internal/domain"
+import (
+	"context"
+	"todo_cli/internal/domain"
+)
 
 type TodoRepository interface {
-	GetAll() ([]domain.Todo, error)
-	Create(todo domain.Todo) error
-	Update(todo domain.Todo) error
-	Delete(id string) error
+	GetAll(ctx context.Context) ([]domain.Todo, error)
+	Create(ctx context.Context, todo domain.Todo) (domain.Todo, error)
+	Update(ctx context.Context, todo domain.Todo) error
+	Delete(ctx context.Context, id int64) error
 }

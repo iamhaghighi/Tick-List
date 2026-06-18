@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"todo_cli/internal/app"
 	"todo_cli/internal/constants"
@@ -17,14 +18,14 @@ func main() {
 		return
 	}
 
-	repo, err := sqlite.New("todo.db")
+	repo, err := sqlite.New(`..\internal\storage\notes.db`)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	todoService := service.NewTodoService(repo)
+	service := service.NewTodoService(repo)
 
-	p := tea.NewProgram(app.NewModel(todoService))
+	p := tea.NewProgram(app.NewModel(service))
 	if _, err := p.Run(); err != nil {
 		fmt.Printf("Error: %v", err)
 	}

@@ -3,7 +3,7 @@ package domain
 import "time"
 
 type Todo struct {
-	ID string
+	ID int64
 	Title string
 	Done bool
 	CreatedAt time.Time
