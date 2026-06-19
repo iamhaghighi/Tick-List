@@ -24,8 +24,8 @@ func (s *TodoService) Create(ctx context.Context, title string) (domain.Todo, er
 	todo := domain.Todo{
 		Title:     title,
 		Done:      false,
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
+		CreatedAt: time.Now().UTC(),
+		UpdatedAt: time.Now().UTC(),
 	}
 
 	created, err := s.repo.Create(ctx, todo)
@@ -43,7 +43,7 @@ func (s *TodoService) Update(ctx context.Context, todo domain.Todo) (domain.Todo
 	if todo.ID == 0 {
 		return domain.Todo{}, errors.New("invalid id")
 	}
-	todo.UpdatedAt = time.Now()
+	todo.UpdatedAt = time.Now().UTC()
 	if err := s.repo.Update(ctx, todo); err != nil {
 		return domain.Todo{}, err
 	}
@@ -58,5 +58,5 @@ func (s *TodoService) Delete(ctx context.Context, id int64) error {
 }
 
 func (s *TodoService) UpdateDoneToggle() {
-	
+
 }

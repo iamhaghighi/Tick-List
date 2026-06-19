@@ -99,7 +99,7 @@ func (r *Repository) GetAll(ctx context.Context) ([]domain.Todo, error) {
 }
 
 func (r *Repository) Create(ctx context.Context, todo domain.Todo) (domain.Todo, error) {
-	now := time.Now()
+	now := time.Now().UTC()
 	res, err := r.db.ExecContext(ctx, `
 		INSERT INTO todos(
 			title,
@@ -111,8 +111,8 @@ func (r *Repository) Create(ctx context.Context, todo domain.Todo) (domain.Todo,
 	`,
 		todo.Title,
 		boolToInt(todo.Done),
-		now.Format(time.DateTime),
-		now.Format(time.DateTime),
+		now.Format(time.RFC3339Nano),
+		now.Format(time.RFC3339Nano),
 	)
 	if err != nil {
 		return domain.Todo{}, err
@@ -135,7 +135,7 @@ func (r *Repository) Create(ctx context.Context, todo domain.Todo) (domain.Todo,
 }
 
 func (r *Repository) Update(ctx context.Context, todo domain.Todo) error {
-	now := time.Now()
+	now := time.Now().UTC()
 	res, err := r.db.ExecContext(ctx, `
 		UPDATE todos
 		SET
@@ -146,7 +146,7 @@ func (r *Repository) Update(ctx context.Context, todo domain.Todo) error {
 		`,
 		todo.Title,
 		boolToInt(todo.Done),
-		now.Format(time.DateTime),
+		now.Format(time.RFC3339Nano),
 		todo.ID,
 	)
 	if err != nil {
