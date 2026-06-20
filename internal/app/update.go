@@ -65,24 +65,21 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		if m.activeScreen == EditorScreen {
 			switch key {
-			case "q", "ctrl+c":
-				return m, tea.Quit
-
 			case "esc":
 				m.activeScreen = TodoScreen
 				return m, nil
 
 			case "enter":
 				value := m.editor.Input.Value()
-
-				if m.editor.Mode == editor.CreateMode {
+				switch m.editor.Mode {
+				case editor.CreateMode:
 					if value != "" {
 						_, _ = m.todoState.Service.Create(Ctx, value)
 						m.todoState.Todos, _ = m.todoState.Service.GetAll(Ctx)
 						m.activeScreen = TodoScreen
 						return m, nil
 					}
-				} else if m.editor.Mode == editor.EditMode {
+				case editor.EditMode:
 					if value != "" && len(m.todoState.Todos) > 0 {
 						_, _ = m.todoState.Service.Update(Ctx, domain.Todo{
 							ID:    m.todoState.Todos[m.todoState.Cursor].ID,
@@ -92,7 +89,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						m.activeScreen = TodoScreen
 						return m, nil
 					}
-				} else if m.editor.Mode == editor.DeleteMode {
+				case editor.DeleteMode:
 					if value == "y" && len(m.todoState.Todos) > 0 {
 						id := m.todoState.Todos[m.todoState.Cursor].ID
 						_ = m.todoState.Service.Delete(Ctx, id)
@@ -105,7 +102,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					}
 				}
 				return m, nil
-
 			default:
 				m.editor.Input, cmd = m.editor.Input.Update(msg)
 				return m, cmd
