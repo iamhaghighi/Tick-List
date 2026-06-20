@@ -1,8 +1,6 @@
 package app
 
 import (
-	"context"
-	"log"
 	"todo_cli/internal/components/editor"
 	"todo_cli/internal/domain"
 
@@ -10,12 +8,7 @@ import (
 )
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	var (
-		cmds []tea.Cmd
-		cmd  tea.Cmd
-	)
-	m.editor.Input, cmd = m.editor.Input.Update(msg)
-	cmds = append(cmds, cmd)
+	var cmd tea.Cmd
 
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
@@ -32,29 +25,24 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "a", "A":
 			if m.activeScreen == TodoScreen {
 				m.editor.Input.Placeholder = "write a todo..."
-
 				m.activeScreen = EditorScreen
 				m.editor.Mode = editor.CreateMode
-
 				m.editor.Input.SetValue("")
-
 			}
-		case "e", "E":
-			if m.activeScreen == TodoScreen {
-				m.editor.Input.Placeholder = "edit todo..."
 
+		case "e", "E":
+			if m.activeScreen == TodoScreen && len(m.todoState.Todos) > 0 {
+				m.editor.Input.Placeholder = "edit todo..."
 				m.activeScreen = EditorScreen
 				m.editor.Mode = editor.EditMode
-
-				m.editor.Input.SetValue("")
+				m.editor.Input.SetValue(m.todoState.Todos[m.todoState.Cursor].Title)
 			}
-		case "delete":
-			if m.activeScreen == TodoScreen {
-				m.editor.Input.Placeholder = "  y - confirm to delete"
 
+		case "delete":
+			if m.activeScreen == TodoScreen && len(m.todoState.Todos) > 0 {
+				m.editor.Input.Placeholder = "  y - confirm to delete"
 				m.activeScreen = EditorScreen
 				m.editor.Mode = editor.DeleteMode
-
 				m.editor.Input.SetValue("")
 			}
 
@@ -65,71 +53,52 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "enter":
 			if m.activeScreen == TodoScreen {
-				id := m.todoState.Todos[m.todoState.Cursor].ID
-				done := m.todoState.Todos[m.todoState.Cursor].Done
-				//todo: error handling
-				m.todoState.Service.Toggle(Ctx, id, !done)
-				m.todoState.Todos, _ = m.todoState.Service.GetAll(Ctx)
+				if len(m.todoState.Todos) > 0 {
+					id := m.todoState.Todos[m.todoState.Cursor].ID
+					done := m.todoState.Todos[m.todoState.Cursor].Done
+					_ = m.todoState.Service.Toggle(Ctx, id, !done)
+					m.todoState.Todos, _ = m.todoState.Service.GetAll(Ctx)
+				}
 			}
 
 			if m.activeScreen == EditorScreen {
+				value := m.editor.Input.Value()
 
 				if m.editor.Mode == editor.CreateMode {
-					value := m.editor.Input.Value()
-
 					if value != "" {
-						m.todoState.Service.Create(Ctx, value)
-						todos, _ := m.todoState.Service.GetAll(context.Background())
-						m.todoState.Todos = todos
-
+						_, _ = m.todoState.Service.Create(Ctx, value)
+						m.todoState.Todos, _ = m.todoState.Service.GetAll(Ctx)
 						m.activeScreen = TodoScreen
 					}
-				}
-
-				if m.editor.Mode == editor.EditMode {
-					value := m.editor.Input.Value()
-
-					if value != "" {
-
-						m.todoState.Service.Update(Ctx, domain.Todo{
+				} else if m.editor.Mode == editor.EditMode {
+					if value != "" && len(m.todoState.Todos) > 0 {
+						_, _ = m.todoState.Service.Update(Ctx, domain.Todo{
 							ID:    m.todoState.Todos[m.todoState.Cursor].ID,
 							Title: value,
 						})
-
 						m.todoState.Todos, _ = m.todoState.Service.GetAll(Ctx)
-
 						m.activeScreen = TodoScreen
 					}
-				}
-
-				if m.editor.Mode == editor.DeleteMode {
-					value := m.editor.Input.Value()
-					switch value {
-					case "y":
+				} else if m.editor.Mode == editor.DeleteMode {
+					if value == "y" && len(m.todoState.Todos) > 0 {
 						id := m.todoState.Todos[m.todoState.Cursor].ID
-						if err := m.todoState.Service.Delete(Ctx, id); err != nil {
-							log.Fatalf("unable to delete todo: %v", err)
-						}
-						var err error
-						m.todoState.Todos, err = m.todoState.Service.GetAll(Ctx)
-						if err != nil {
-							log.Fatalf("unable to get todos: %v", err)
-						}
+						_ = m.todoState.Service.Delete(Ctx, id)
+						m.todoState.Todos, _ = m.todoState.Service.GetAll(Ctx)
 						m.activeScreen = TodoScreen
-					case "n", "N":
+					} else if value == "n" || value == "N" {
 						m.activeScreen = TodoScreen
 					}
 				}
 			}
+		}
 
+		if m.activeScreen == EditorScreen {
+			m.editor.Input, cmd = m.editor.Input.Update(msg)
 		}
 	}
 
-	switch m.activeScreen {
-	case TodoScreen:
+	if m.activeScreen == TodoScreen {
 		m.todoState.Update(msg)
-	case EditorScreen:
-		cmd = m.editor.Update(msg)
 	}
 
 	return m, cmd
