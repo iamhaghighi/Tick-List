@@ -13,6 +13,7 @@ type keyMap struct {
 	A      key.Binding
 	E      key.Binding
 	Delete key.Binding
+	Y      key.Binding
 	Esc    key.Binding
 	Back   key.Binding
 	Quit   key.Binding
@@ -52,6 +53,10 @@ func NewKeyMap() keyMap {
 			key.WithKeys("enter"),
 			key.WithHelp("enter", "save"),
 		),
+		Y: key.NewBinding(
+			key.WithKeys("y", "Y"),
+			key.WithHelp("y", "confirm"),
+		),
 		Esc: key.NewBinding(
 			key.WithKeys("esc"),
 			key.WithHelp("esc", "cancel"),
@@ -72,7 +77,7 @@ func (k keyMap) EditorKey() []key.Binding {
 }
 
 func (k keyMap) DeleteKey() []key.Binding {
-	return []key.Binding{k.Esc}
+	return []key.Binding{k.Y ,k.Esc}
 }
 
 func (k keyMap) FullHelp() [][]key.Binding {

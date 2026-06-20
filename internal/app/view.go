@@ -22,11 +22,7 @@ func (m model) View() tea.View {
 		con += m.todoState.View()
 
 	case EditorScreen:
-		todoTitle := ""
-		if len(m.todoState.Todos) > 0 {
-			todoTitle = m.todoState.Todos[m.todoState.Cursor].Title
-		}
-		con += m.editor.View(todoTitle)
+		con += m.editor.View()
 
 	}
 

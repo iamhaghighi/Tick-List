@@ -28,6 +28,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.activeScreen = EditorScreen
 				m.editor.Mode = editor.CreateMode
 				m.editor.Input.SetValue("")
+				m.editor.Input.Focus()
 				return m, nil
 
 			case "e", "E":
@@ -36,6 +37,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.activeScreen = EditorScreen
 					m.editor.Mode = editor.EditMode
 					m.editor.Input.SetValue(m.todoState.Todos[m.todoState.Cursor].Title)
+					m.editor.Input.Focus()
 					return m, nil
 				}
 
@@ -44,7 +46,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.editor.Input.Placeholder = "  y - confirm to delete"
 					m.activeScreen = EditorScreen
 					m.editor.Mode = editor.DeleteMode
-					m.editor.Input.SetValue("")
+					m.editor.Input.SetValue(m.todoState.Todos[m.todoState.Cursor].Title)
+					m.editor.Input.Blur()
 					return m, nil
 				}
 
@@ -89,19 +92,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						m.activeScreen = TodoScreen
 						return m, nil
 					}
-				case editor.DeleteMode:
-					if value == "y" && len(m.todoState.Todos) > 0 {
-						id := m.todoState.Todos[m.todoState.Cursor].ID
-						_ = m.todoState.Service.Delete(Ctx, id)
-						m.todoState.Todos, _ = m.todoState.Service.GetAll(Ctx)
-						m.activeScreen = TodoScreen
-						return m, nil
-					} else if value == "n" || value == "N" {
-						m.activeScreen = TodoScreen
-						return m, nil
-					}
 				}
 				return m, nil
+			case "y", "Y":
+				if m.editor.Mode == editor.DeleteMode {
+					id := m.todoState.Todos[m.todoState.Cursor].ID
+					_ = m.todoState.Service.Delete(Ctx, id)
+					m.todoState.Todos, _ = m.todoState.Service.GetAll(Ctx)
+					m.activeScreen = TodoScreen
+					return m, nil
+				}
 			default:
 				m.editor.Input, cmd = m.editor.Input.Update(msg)
 				return m, cmd

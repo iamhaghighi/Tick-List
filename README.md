@@ -69,15 +69,7 @@ go run cmd/main.go
 Or build a binary:
 
 ```bash
-go build -o TickList cmd/main.go
-./TickList
-```
-
-### 🔖 Version Flag
-
-```bash
-go run cmd/main.go --version
-go run cmd/main.go -v
+go build -o TickList.exe cmd/main.go
 ```
 
 ---
