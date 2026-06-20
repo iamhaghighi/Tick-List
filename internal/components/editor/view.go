@@ -2,22 +2,27 @@ package editor
 
 import "fmt"
 
-func (m Model) View(todoTitle string) string {
+func (m Model) View() string {
 	title := ""
+	help := ""
 
 	if m.Mode == CreateMode {
-		title = "Create Todo"
+		title = "Create Todo:"
+		help = m.help.EditorKeyRender()
 	}
 
 	if m.Mode == EditMode {
-		title = "Edit: " + todoTitle
+		title = "Edit Todo: "
+		help = m.help.EditorKeyRender()
 	}
 
 	if m.Mode == DeleteMode {
-		title = fmt.Sprintf("Delete this todo? (%s) y/N", todoTitle)
+		title = "Delete Todo?"
+		help = m.help.DeleteRender()
+
 	}
 
 	return fmt.Sprintf(
-		"%s\n\n%s\n\n", title, m.Input.View(),
+		"%s\n%s\n\n%s", title, m.Input.View(), help,
 	)
 }

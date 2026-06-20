@@ -14,11 +14,11 @@ import (
 
 func main() {
 	if len(os.Args) > 1 && (os.Args[1] == "--version" || os.Args[1] == "-v" || os.Args[1] == "version" || os.Args[1] == "v") {
-		fmt.Println("Todo Cli Management " + constants.VERSION)
+		fmt.Println(constants.VERSION)
 		return
 	}
 
-	repo, err := sqlite.New(`..\internal\storage\todos.db`)
+	repo, err := sqlite.New(`todos.db`)
 	if err != nil {
 		log.Fatal(err)
 	}
