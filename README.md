@@ -42,28 +42,6 @@ TickList is a minimalist CLI todo application that lives in your terminal. Built
  ↑/k move up   ↓/j move down   enter select   a add   e edit   delete delete   'q' quit
 ```
 
-### ✏️ Editor Screen (Create / Edit)
-
-```
-Create Todo
-
-[Type your todo here...                    ]
-
-💾 enter save   ⬅️ esc cancel
-```
-
-### 🗑️ Delete Confirmation
-
-```
-Delete this todo? (Buy groceries)
-
-[y]
-
-⬅️ esc cancel
-```
-
----
-
 ## 🚀 Getting Started
 
 ### 📋 Prerequisites
