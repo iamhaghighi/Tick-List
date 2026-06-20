@@ -53,7 +53,7 @@ TickList is a minimalist CLI todo application that lives in your terminal. Built
 Clone the repository and build:
 
 ```bash
-git clone https://github.com/iamhaghighi/TickList.git
+git clone https://github.com/iamhaghighi/Tick-List.git
 cd Todo_CLi
 go mod download
 ```
