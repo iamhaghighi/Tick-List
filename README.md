@@ -86,6 +86,7 @@ go build -o TickList.exe cmd/main.go
 | `a` | ➕ Add a new todo |
 | `e` | ✏️ Edit the selected todo |
 | `delete` | 🗑️ Delete the selected todo |
+| `y` | ✅ Confirm delete |
 | `esc` | ⬅️ Cancel / go back |
 | `q` / `ctrl+c` | 🚪 Quit |
 
@@ -106,7 +107,7 @@ go build -o TickList.exe cmd/main.go
 
 1. Navigate to the todo you want to delete
 2. Press `delete`
-3. Type `y` to confirm, then press `enter` -- or press `esc` to cancel
+3. Confirm by pressing `y` (or cancel with `esc`)
 
 ### 🔄 Toggling Completion
 
@@ -154,7 +155,6 @@ todo_cli/
 │   │       └── sqlite_repository.go     # 🗄️ SQLite implementation
 │   ├── service/
 │   │   └── todo_service.go              # ⚙️ Business logic & validation
-│   ├── storage/                          # 📁 (gitignored) SQLite database
 │   └── styles/
 │       ├── color.go                     # 🎨 Color palette
 │       └── style.go                     # 🖌️ Lipgloss style definitions
@@ -207,9 +207,7 @@ TickList follows a **layered architecture** inspired by clean architecture princ
 
 ## 🗄️ Database
 
-TickList uses a local SQLite database stored at `internal/storage/todos.db`. The database is created automatically on first run.
-
-📁 The `internal/storage/` directory is gitignored -- your local database will not be committed or pushed to the repository.
+TickList uses a local SQLite database stored at `todos.db` in the project root. The database is created automatically on first run.
 
 ### 📐 Schema
 
@@ -225,18 +223,6 @@ CREATE TABLE IF NOT EXISTS todos (
 
 No migrations or manual setup needed -- the schema is applied automatically by the SQLite repository on startup.
 
----
-
-## ⚙️ Configuration
-
-TickList requires no configuration. All settings are self-contained:
-
-- 📁 The database is created at `internal/storage/todos.db` relative to the binary
-- 📌 The header displays the app name, description, Go version, and app version
-- ❓ Key bindings are defined in `internal/components/help/help.go`
-
----
-
 ## 🤝 Contributing
 
 1. 🍴 Fork the repository
@@ -245,7 +231,7 @@ TickList requires no configuration. All settings are self-contained:
 4. 🚀 Push to the branch (`git push origin feature/my-feature`)
 5. 📬 Open a Pull Request
 
-Please follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
+Please follow [Conventional Commits](https://conventional-emoji-commits.site/) for commit messages.
 
 ---
 
@@ -254,9 +240,3 @@ Please follow [Conventional Commits](https://www.conventionalcommits.org/) for c
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
-
-<div align="center">
-
-**💖 Built with care using the [Charm](https://charm.sh) ecosystem.**
-
-</div>
