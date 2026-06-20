@@ -28,6 +28,8 @@ TickList is a minimalist CLI todo application that lives in your terminal. Built
 
 ## Demo
 
+**Todo List Screen**
+
 ```
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │ Todo Management  A Fast, lightweight Todo        Go 1.26.4   v1.0.0        │
@@ -37,9 +39,27 @@ TickList is a minimalist CLI todo application that lives in your terminal. Built
    [ ]  Finish project documentation               created_at: 13:00:00  updated_at: 13:00:00
    [ ]  Review pull requests                       created_at: 12:00:00  updated_at: 12:00:00
 
- ↑/k move up    ↓/j move down
- a add           e edit
- enter select    'q' quit
+ ↑/k move up   ↓/j move down   enter select   a add   e edit   delete delete   'q' quit
+```
+
+**Editor Screen (Create / Edit)**
+
+```
+Create Todo
+
+[Type your todo here...                    ]
+
+enter save   esc cancel
+```
+
+**Delete Confirmation**
+
+```
+Delete this todo? (Buy groceries)
+
+[y]
+
+esc cancel
 ```
 
 ---
@@ -116,7 +136,7 @@ go run cmd/main.go -v
 
 1. Navigate to the todo you want to delete
 2. Press `delete`
-3. Type `y` to confirm or `n` to cancel
+3. Type `y` to confirm, then press `enter` -- or press `esc` to cancel
 
 ### Toggling Completion
 
@@ -164,11 +184,11 @@ todo_cli/
 │   │       └── sqlite_repository.go     # SQLite implementation
 │   ├── service/
 │   │   └── todo_service.go              # Business logic & validation
-│   ├── storage/
-│   │   └── todos.db                     # SQLite database file
+│   ├── storage/                          # (gitignored) SQLite database
 │   └── styles/
 │       ├── color.go                     # Color palette
 │       └── style.go                     # Lipgloss style definitions
+├── .gitignore
 ├── go.mod
 └── go.sum
 ```
@@ -218,6 +238,8 @@ TickList follows a **layered architecture** inspired by clean architecture princ
 ## Database
 
 TickList uses a local SQLite database stored at `internal/storage/todos.db`. The database is created automatically on first run.
+
+The `internal/storage/` directory is gitignored -- your local database will not be committed or pushed to the repository.
 
 ### Schema
 
