@@ -9,8 +9,9 @@ type keyMap struct {
 	Up    key.Binding
 	Down  key.Binding
 	Enter key.Binding
+	A     key.Binding
+	E     key.Binding
 	Back  key.Binding
-	Help  key.Binding
 	Quit  key.Binding
 }
 
@@ -25,16 +26,20 @@ func NewKeyMap() keyMap {
 			key.WithHelp("↓/j", "move down"),
 		),
 		Enter: key.NewBinding(
-			key.WithKeys("enter", " "),
+			key.WithKeys("enter", "space"),
 			key.WithHelp("enter", "select"),
 		),
 		Back: key.NewBinding(
 			key.WithKeys("esc", "b"),
 			key.WithHelp("esc/b", "back to menu"),
 		),
-		Help: key.NewBinding(
-			key.WithKeys("h"),
-			key.WithHelp("'h'", "toggle help"),
+		A: key.NewBinding(
+			key.WithKeys("a", "A"),
+			key.WithHelp("a", "add"),
+		),
+		E: key.NewBinding(
+			key.WithKeys("e", "E"),
+			key.WithHelp("e", "edit"),
 		),
 		Quit: key.NewBinding(
 			key.WithKeys("q", "ctrl+c"),
@@ -43,15 +48,23 @@ func NewKeyMap() keyMap {
 	}
 }
 
-func (k keyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.Up, k.Down, k.Enter, k.Quit}
+// func (k keyMap) MenuKey() []key.Binding {
+// 	return []key.Binding{k.Up, k.Down, k.Enter, k.A, k.Quit}
+// }
+
+func (k keyMap) MenuKey() [][]key.Binding {
+	return [][]key.Binding{
+		{k.Up, k.Down},
+		{k.A, k.E},
+		{k.Enter, k.Quit},
+	}
 }
 
 func (k keyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
 		{k.Up, k.Down},
 		{k.Enter, k.Back},
-		{k.Help, k.Quit},
+		{k.Quit},
 	}
 }
 
@@ -61,7 +74,7 @@ type Model struct {
 	Keys     keyMap
 }
 
-func NewHelpModel() Model {
+func New() Model {
 	return Model{
 		Model:    help.New(),
 		ShowHelp: false,
@@ -89,6 +102,10 @@ func (h Model) RenderFull() string {
 	return h.Model.FullHelpView(h.Keys.FullHelp())
 }
 
-func (h Model) RenderShort() string {
-	return h.Model.ShortHelpView(h.Keys.ShortHelp())
+// func (h Model) MenuRender() string {
+// 	return h.Model.ShortHelpView(h.Keys.MenuKey())
+// }
+
+func (h Model) MenuRender() string {
+	return h.Model.FullHelpView(h.Keys.MenuKey())
 }

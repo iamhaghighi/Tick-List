@@ -1,26 +1,32 @@
 package todo
 
 import (
+	"context"
+	"todo_cli/internal/components/help"
 	"todo_cli/internal/domain"
 	"todo_cli/internal/service"
 )
 
 type State struct {
 	Cursor  int
-	Items   []domain.Todo
+	Todos   []domain.Todo
 	Service *service.TodoService
+
+	help help.Model
 }
 
-func NewTodoModel(service *service.TodoService) State {
+func New(service *service.TodoService) State {
 	// TODO: add error and log
-	todos, _ := service.GetAll()
+	ctx := context.Background()
+	todos, _ := service.GetAll(ctx)
 	return State{
-		Items: todos,
+		Todos:   todos,
 		Service: service,
+		help:    help.New(),
 	}
 }
 
-// todo: move to todo service. all of down there 
+// todo: move to todo service
 func (m *State) CursorMoveUp() {
 	if m.Cursor > 0 {
 		m.Cursor--
@@ -28,11 +34,11 @@ func (m *State) CursorMoveUp() {
 }
 
 func (m *State) CursorMoveDown() {
-	if m.Cursor < len(m.Items)-1 {
+	if m.Cursor < len(m.Todos)-1 {
 		m.Cursor++
 	}
 }
 
-func (m *State) DoneToggle() {
-	m.Items[m.Cursor].Done = !m.Items[m.Cursor].Done
-}
+// func (m *State) DoneToggle() {
+// 	m.Todos[m.Cursor].Done = !m.Todos[m.Cursor].Done
+// }

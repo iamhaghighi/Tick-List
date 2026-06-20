@@ -140,12 +140,10 @@ func (r *Repository) Update(ctx context.Context, todo domain.Todo) error {
 		UPDATE todos
 		SET
 			title = ?,
-			done = ?,
 			updated_at = ?
 		WHERE id = ?
 		`,
 		todo.Title,
-		boolToInt(todo.Done),
 		now.Format(time.RFC3339Nano),
 		todo.ID,
 	)
@@ -181,8 +179,29 @@ func (r *Repository) Delete(ctx context.Context, id int64) error {
 	return nil
 }
 
+func (r *Repository) Toggle(ctx context.Context, id int64, done bool) error {
+	res, err := r.db.ExecContext(ctx, `
+	UPDATE todos
+	SET
+		done = ?
+	WHERE id = ?
+	`,
+		boolToInt(done),
+		id,
+	)
+
+	aff, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if aff == 0 {
+		return errors.New("todo not found")
+	}
+	return nil
+}
+
 func boolToInt(b bool) int {
-	if b {
+	if b == true {
 		return 1
 	}
 	return 0
