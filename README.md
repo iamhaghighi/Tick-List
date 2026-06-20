@@ -1,6 +1,6 @@
 <div align="center">
 
-# Todo on Terminal
+# 📝 Todo on Terminal
 
 **A fast, lightweight terminal-based todo manager built with Go.**
 
@@ -14,21 +14,21 @@ TickList is a minimalist CLI todo application that lives in your terminal. Built
 
 ---
 
-## Features
+## ✨ Features
 
-- **Full CRUD** -- Create, read, update, and delete todos from a single screen
-- **Toggle completion** -- Mark tasks as done with a single keystroke
-- **Persistent storage** -- Todos are saved to a local SQLite database (no setup required)
-- **Vim-friendly keybindings** -- Navigate with `j`/`k` or arrow keys
-- **Clean TUI** -- Full-screen terminal interface with a responsive header and inline help
-- **Timestamps** -- Track when each todo was created and last updated
-- **Zero dependencies to install** -- Pure Go SQLite driver (no CGO required)
+- 📋 **Full CRUD** -- Create, read, update, and delete todos from a single screen
+- ✅ **Toggle completion** -- Mark tasks as done with a single keystroke
+- 💾 **Persistent storage** -- Todos are saved to a local SQLite database (no setup required)
+- ⌨️ **Vim-friendly keybindings** -- Navigate with `j`/`k` or arrow keys
+- 🖥️ **Clean TUI** -- Full-screen terminal interface with a responsive header and inline help
+- 🕐 **Timestamps** -- Track when each todo was created and last updated
+- ⚡ **Zero dependencies to install** -- Pure Go SQLite driver (no CGO required)
 
 ---
 
-## Demo
+## 👀 Demo
 
-**Todo List Screen**
+### 📋 Todo List Screen
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────┐
@@ -42,35 +42,35 @@ TickList is a minimalist CLI todo application that lives in your terminal. Built
  ↑/k move up   ↓/j move down   enter select   a add   e edit   delete delete   'q' quit
 ```
 
-**Editor Screen (Create / Edit)**
+### ✏️ Editor Screen (Create / Edit)
 
 ```
 Create Todo
 
 [Type your todo here...                    ]
 
-enter save   esc cancel
+💾 enter save   ⬅️ esc cancel
 ```
 
-**Delete Confirmation**
+### 🗑️ Delete Confirmation
 
 ```
 Delete this todo? (Buy groceries)
 
 [y]
 
-esc cancel
+⬅️ esc cancel
 ```
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
-### Prerequisites
+### 📋 Prerequisites
 
 - **Go 1.26** or later
 
-### Installation
+### 📥 Installation
 
 Clone the repository and build:
 
@@ -80,7 +80,7 @@ cd Todo_CLi
 go mod download
 ```
 
-### Running
+### ▶️ Running
 
 From the project root, run:
 
@@ -95,7 +95,7 @@ go build -o TickList cmd/main.go
 ./TickList
 ```
 
-### Version Flag
+### 🔖 Version Flag
 
 ```bash
 go run cmd/main.go --version
@@ -104,90 +104,90 @@ go run cmd/main.go -v
 
 ---
 
-## Usage
+## 🎮 Usage
 
-### Navigation
+### 🧭 Navigation
 
-| Key | Action |
+| 🔑 Key | ⚡ Action |
 |---|---|
-| `↑` / `k` | Move cursor up |
-| `↓` / `j` | Move cursor down |
-| `enter` | Toggle todo completion |
-| `a` | Add a new todo |
-| `e` | Edit the selected todo |
-| `delete` | Delete the selected todo |
-| `esc` | Cancel / go back |
-| `q` / `ctrl+c` | Quit |
+| `↑` / `k` | ⬆️ Move cursor up |
+| `↓` / `j` | ⬇️ Move cursor down |
+| `enter` | 🔄 Toggle todo completion |
+| `a` | ➕ Add a new todo |
+| `e` | ✏️ Edit the selected todo |
+| `delete` | 🗑️ Delete the selected todo |
+| `esc` | ⬅️ Cancel / go back |
+| `q` / `ctrl+c` | 🚪 Quit |
 
-### Creating a Todo
+### ➕ Creating a Todo
 
 1. Press `a` to open the editor
 2. Type your todo title
 3. Press `enter` to save
 
-### Editing a Todo
+### ✏️ Editing a Todo
 
 1. Navigate to the todo you want to edit
 2. Press `e` to open the editor
 3. Update the title
 4. Press `enter` to save
 
-### Deleting a Todo
+### 🗑️ Deleting a Todo
 
 1. Navigate to the todo you want to delete
 2. Press `delete`
 3. Type `y` to confirm, then press `enter` -- or press `esc` to cancel
 
-### Toggling Completion
+### 🔄 Toggling Completion
 
 Navigate to a todo and press `enter` to flip its done state.
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
 ```
 todo_cli/
 ├── cmd/
-│   └── main.go                          # Entry point & CLI flags
+│   └── main.go                          # 🚀 Entry point & CLI flags
 ├── internal/
 │   ├── app/
-│   │   ├── model.go                     # Root Bubble Tea model
-│   │   ├── state.go                     # Screen state (Todo / Editor)
-│   │   ├── update.go                    # Global key handling & routing
-│   │   └── view.go                      # Screen renderer
+│   │   ├── model.go                     # 🧩 Root Bubble Tea model
+│   │   ├── state.go                     # 🖥️ Screen state (Todo / Editor)
+│   │   ├── update.go                    # ⌨️ Global key handling & routing
+│   │   └── view.go                      # 🎨 Screen renderer
 │   ├── components/
 │   │   ├── editor/
-│   │   │   ├── model.go                 # Editor state (Create / Edit / Delete)
-│   │   │   ├── update.go                # Editor input handling
-│   │   │   └── view.go                  # Editor UI
+│   │   │   ├── model.go                 # ✏️ Editor state (Create / Edit / Delete)
+│   │   │   ├── update.go                # ⌨️ Editor input handling
+│   │   │   └── view.go                  # 🖼️ Editor UI
 │   │   ├── header/
-│   │   │   ├── header.go                # Header model & initialization
-│   │   │   └── view.go                  # Responsive full-width header bar
+│   │   │   ├── header.go                # 📌 Header model & initialization
+│   │   │   └── view.go                  # 📊 Responsive full-width header bar
 │   │   ├── help/
-│   │   │   └── help.go                  # Key bindings & help panel
+│   │   │   └── help.go                  # ❓ Key bindings & help panel
 │   │   └── todo/
-│   │       ├── model.go                 # Todo list state & cursor
-│   │       ├── update.go                # Cursor movement
-│   │       └── view.go                  # Todo list rendering
+│   │       ├── model.go                 # 📋 Todo list state & cursor
+│   │       ├── update.go                # 🧭 Cursor movement
+│   │       └── view.go                  # 🖼️ Todo list rendering
 │   ├── constants/
-│   │   └── constant.go                  # App name, version, description
+│   │   └── constant.go                  # 🏷️ App name, version, description
 │   ├── domain/
-│   │   └── todo.go                      # Todo entity definition
+│   │   └── todo.go                      # 📦 Todo entity definition
 │   ├── messages/
-│   │   └── todo.go                      # Bubble Tea message types
+│   │   └── todo.go                      # 📨 Bubble Tea message types
 │   ├── repository/
-│   │   ├── todo_repository.go           # Repository interface
+│   │   ├── todo_repository.go           # 🔌 Repository interface
 │   │   ├── memory/
-│   │   │   └── todo_repository.go       # In-memory implementation
+│   │   │   └── todo_repository.go       # 💭 In-memory implementation
 │   │   └── sqlite/
-│   │       └── sqlite_repository.go     # SQLite implementation
+│   │       └── sqlite_repository.go     # 🗄️ SQLite implementation
 │   ├── service/
-│   │   └── todo_service.go              # Business logic & validation
-│   ├── storage/                          # (gitignored) SQLite database
+│   │   └── todo_service.go              # ⚙️ Business logic & validation
+│   ├── storage/                          # 📁 (gitignored) SQLite database
 │   └── styles/
-│       ├── color.go                     # Color palette
-│       └── style.go                     # Lipgloss style definitions
+│       ├── color.go                     # 🎨 Color palette
+│       └── style.go                     # 🖌️ Lipgloss style definitions
 ├── .gitignore
 ├── go.mod
 └── go.sum
@@ -195,53 +195,53 @@ todo_cli/
 
 ---
 
-## Architecture
+## 🏗️ Architecture
 
 TickList follows a **layered architecture** inspired by clean architecture principles:
 
 ```
 ┌─────────────────────────────────────────────────┐
-│                   UI Layer                       │
+│              🖥️  UI Layer                       │
 │  app/ ─► components/editor, todo, header, help  │
 ├─────────────────────────────────────────────────┤
-│                Service Layer                     │
+│              ⚙️  Service Layer                   │
 │          service/todo_service.go                 │
 ├─────────────────────────────────────────────────┤
-│              Repository Layer                    │
+│              🔌 Repository Layer                 │
 │     repository/sqlite/ (SQLite implementation)   │
 ├─────────────────────────────────────────────────┤
-│               Domain Layer                       │
+│              📦 Domain Layer                     │
 │              domain/todo.go                      │
 └─────────────────────────────────────────────────┘
 ```
 
-- **UI Layer** -- Built with Bubble Tea (Elm architecture). The root `app` model owns all sub-components and routes messages based on the active screen.
-- **Service Layer** -- Handles validation and business logic. Wraps the repository with input checks before persisting.
-- **Repository Layer** -- Interface-based (`TodoRepository`). The active implementation uses SQLite via `modernc.org/sqlite` (pure Go, no CGO).
-- **Domain Layer** -- Defines the `Todo` entity shared across all layers.
+- 🖥️ **UI Layer** -- Built with Bubble Tea (Elm architecture). The root `app` model owns all sub-components and routes messages based on the active screen.
+- ⚙️ **Service Layer** -- Handles validation and business logic. Wraps the repository with input checks before persisting.
+- 🔌 **Repository Layer** -- Interface-based (`TodoRepository`). The active implementation uses SQLite via `modernc.org/sqlite` (pure Go, no CGO).
+- 📦 **Domain Layer** -- Defines the `Todo` entity shared across all layers.
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-| Component | Technology |
+| 🔧 Component | 💡 Technology |
 |---|---|
-| Language | [Go](https://go.dev) 1.26 |
-| TUI Framework | [Bubble Tea v2](https://github.com/charmbracelet/bubbletea) |
-| UI Components | [Bubbles v2](https://github.com/charmbracelet/bubbles) |
-| Styling | [Lipgloss v2](https://github.com/charmbracelet/lipgloss) |
-| Database | [SQLite](https://github.com/nicholasgasior/goinernsql) via [modernc.org/sqlite](https://modernc.org/sqlite) (pure Go) |
-| Architecture | Elm architecture (MVU) with layered service/repository pattern |
+| 📝 Language | [Go](https://go.dev) 1.26 |
+| 🖥️ TUI Framework | [Bubble Tea v2](https://github.com/charmbracelet/bubbletea) |
+| 🧩 UI Components | [Bubbles v2](https://github.com/charmbracelet/bubbles) |
+| 🖌️ Styling | [Lipgloss v2](https://github.com/charmbracelet/lipgloss) |
+| 🗄️ Database | [SQLite](https://github.com/nicholasgasior/goinernsql) via [modernc.org/sqlite](https://modernc.org/sqlite) (pure Go) |
+| 🏗️ Architecture | Elm architecture (MVU) with layered service/repository pattern |
 
 ---
 
-## Database
+## 🗄️ Database
 
 TickList uses a local SQLite database stored at `internal/storage/todos.db`. The database is created automatically on first run.
 
-The `internal/storage/` directory is gitignored -- your local database will not be committed or pushed to the repository.
+📁 The `internal/storage/` directory is gitignored -- your local database will not be committed or pushed to the repository.
 
-### Schema
+### 📐 Schema
 
 ```sql
 CREATE TABLE IF NOT EXISTS todos (
@@ -257,29 +257,29 @@ No migrations or manual setup needed -- the schema is applied automatically by t
 
 ---
 
-## Configuration
+## ⚙️ Configuration
 
 TickList requires no configuration. All settings are self-contained:
 
-- The database is created at `internal/storage/todos.db` relative to the binary
-- The header displays the app name, description, Go version, and app version
-- Key bindings are defined in `internal/components/help/help.go`
+- 📁 The database is created at `internal/storage/todos.db` relative to the binary
+- 📌 The header displays the app name, description, Go version, and app version
+- ❓ Key bindings are defined in `internal/components/help/help.go`
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/my-feature`)
-3. Commit your changes (`git commit -m 'feat: add my feature'`)
-4. Push to the branch (`git push origin feature/my-feature`)
-5. Open a Pull Request
+1. 🍴 Fork the repository
+2. 🌿 Create a feature branch (`git checkout -b feature/my-feature`)
+3. 💾 Commit your changes (`git commit -m 'feat: add my feature'`)
+4. 🚀 Push to the branch (`git push origin feature/my-feature`)
+5. 📬 Open a Pull Request
 
 Please follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
 
 ---
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
@@ -287,6 +287,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 <div align="center">
 
-**Built with care using the [Charm](https://charm.sh) ecosystem.**
+**💖 Built with care using the [Charm](https://charm.sh) ecosystem.**
 
 </div>
