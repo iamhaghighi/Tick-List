@@ -6,20 +6,28 @@ import (
 
 func (m model) View() tea.View {
 	s := tea.NewView("")
-	s.AltScreen = true // change cmd view to full view
+	s.AltScreen = true
 
 	if m.width == 0 {
 		s.SetContent("Loading...")
 		return s
 	}
 
-	content := m.header.View(m.width)
-	content += "\n\n"
-	content += m.todo.View()
-	content += "\n\n"
-	content += m.help.RenderShort()
-	content += "\n\n"
-	s.SetContent(content)
+	con := m.header.View(m.width)
+	con += "\n\n"
+
+	switch m.activeScreen {
+
+	case TodoScreen:
+		con += m.todoState.View()
+
+	case EditorScreen:
+		todoTitle := m.todoState.Todos[m.todoState.Cursor].Title
+		con += m.editor.View(todoTitle)
+
+	}
+
+	s.SetContent(con)
 
 	return s
 }

@@ -1,13 +1,15 @@
 package todo
 
 import (
-	"fmt"
 	"todo_cli/internal/styles"
+
+	"charm.land/lipgloss/v2"
 )
 
-func (m Model) View() string {
-	mainContent := ""
-	for i, todo := range m.Items {
+func (m State) View() string {
+	s := ""
+
+	for i, todo := range m.Todos {
 
 		itemStyle := styles.Task
 		cursor := " "
@@ -18,12 +20,28 @@ func (m Model) View() string {
 		}
 
 		checked := "[ ]"
-		if m.Items[i].Done == true {
+		if m.Todos[i].Done == true {
 			checked = styles.Completed.UnsetStrikethrough().Render("[✓]")
 			itemStyle = styles.Completed
 		}
 
-		mainContent += fmt.Sprintf("%s %s %s\n", cursor, checked, itemStyle.Render(todo.Title))
+		// s += fmt.Sprintf("%s %s %s\n", cursor, checked, itemStyle.Render(todo.Title))
+		line := lipgloss.JoinHorizontal(
+			lipgloss.Left,
+			" ",
+			cursor,
+			" ",
+			checked,
+			" ",
+			lipgloss.PlaceHorizontal(50, lipgloss.Left, itemStyle.Render(todo.Title)),
+			"created_at: ",
+			todo.CreatedAt.Format("15:04:05"),
+			" updated_at: ",
+			todo.UpdatedAt.Format("15:04:05"),
+		)
+
+		s += line + "\n"
 	}
-	return mainContent
+
+	return s + "\n" +m.help.MenuRender()
 }

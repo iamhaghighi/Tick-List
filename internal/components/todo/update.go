@@ -1,5 +1,20 @@
 package todo
 
-// func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
+import (
+	tea "charm.land/bubbletea/v2"
+)
 
-// }
+func (m *State) Update(msg tea.Msg) {
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+
+		case "up", "k":
+			m.CursorMoveUp()
+
+		case "down", "j":
+			m.CursorMoveDown()
+
+		}
+	}
+}
