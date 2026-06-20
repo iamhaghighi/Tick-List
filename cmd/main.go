@@ -18,7 +18,7 @@ func main() {
 		return
 	}
 
-	repo, err := sqlite.New(`..\internal\storage\notes.db`)
+	repo, err := sqlite.New(`..\internal\storage\todos.db`)
 	if err != nil {
 		log.Fatal(err)
 	}

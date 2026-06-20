@@ -1,6 +1,8 @@
 package app
 
 import (
+	"context"
+	"todo_cli/internal/components/editor"
 	"todo_cli/internal/components/header"
 	"todo_cli/internal/components/help"
 	"todo_cli/internal/components/todo"
@@ -9,20 +11,26 @@ import (
 	tea "charm.land/bubbletea/v2"
 )
 
-type model struct {
-	width  int
-	height int
+var Ctx = context.Background()
 
-	todo   todo.State
-	help   help.Model
-	header header.Model
+type model struct {
+	width        int
+	height       int
+	activeScreen Screen
+
+	todoState todo.State
+	help      help.Model
+	header    header.Model
+	editor    editor.Model
 }
 
 func NewModel(service *service.TodoService) model {
 	return model{
-		todo:   todo.NewTodoModel(service),
-		help:   help.NewHelpModel(),
-		header: header.NewHeader(),
+		activeScreen: TodoScreen,
+		todoState:    todo.New(service),
+		help:         help.New(),
+		header:       header.NewHeader(),
+		editor:       editor.New(),
 	}
 }
 

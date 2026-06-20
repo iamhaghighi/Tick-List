@@ -1,6 +1,8 @@
 package todo
 
-import tea "charm.land/bubbletea/v2"
+import (
+	tea "charm.land/bubbletea/v2"
+)
 
 func (m *State) Update(msg tea.Msg) {
 	switch msg := msg.(type) {
@@ -13,8 +15,6 @@ func (m *State) Update(msg tea.Msg) {
 		case "down", "j":
 			m.CursorMoveDown()
 
-		case "enter":
-			m.DoneToggle()
 		}
 	}
 }
