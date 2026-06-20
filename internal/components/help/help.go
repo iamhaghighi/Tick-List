@@ -6,13 +6,16 @@ import (
 )
 
 type keyMap struct {
-	Up    key.Binding
-	Down  key.Binding
-	Enter key.Binding
-	A     key.Binding
-	E     key.Binding
-	Back  key.Binding
-	Quit  key.Binding
+	Up     key.Binding
+	Down   key.Binding
+	Enter  key.Binding
+	Save   key.Binding
+	A      key.Binding
+	E      key.Binding
+	Delete key.Binding
+	Esc    key.Binding
+	Back   key.Binding
+	Quit   key.Binding
 }
 
 func NewKeyMap() keyMap {
@@ -41,6 +44,18 @@ func NewKeyMap() keyMap {
 			key.WithKeys("e", "E"),
 			key.WithHelp("e", "edit"),
 		),
+		Delete: key.NewBinding(
+			key.WithKeys("delete"),
+			key.WithHelp("delete", "delete"),
+		),
+		Save: key.NewBinding(
+			key.WithKeys("enter"),
+			key.WithHelp("enter", "save"),
+		),
+		Esc: key.NewBinding(
+			key.WithKeys("esc"),
+			key.WithHelp("esc", "cancel"),
+		),
 		Quit: key.NewBinding(
 			key.WithKeys("q", "ctrl+c"),
 			key.WithHelp("'q'", "quit"),
@@ -48,16 +63,16 @@ func NewKeyMap() keyMap {
 	}
 }
 
-// func (k keyMap) MenuKey() []key.Binding {
-// 	return []key.Binding{k.Up, k.Down, k.Enter, k.A, k.Quit}
-// }
+func (k keyMap) MenuKey() []key.Binding {
+	return []key.Binding{k.Up, k.Down, k.Enter, k.A, k.E, k.Delete, k.Quit}
+}
 
-func (k keyMap) MenuKey() [][]key.Binding {
-	return [][]key.Binding{
-		{k.Up, k.Down},
-		{k.A, k.E},
-		{k.Enter, k.Quit},
-	}
+func (k keyMap) EditorKey() []key.Binding {
+	return []key.Binding{k.Save, k.Esc}
+}
+
+func (k keyMap) DeleteKey() []key.Binding {
+	return []key.Binding{k.Esc}
 }
 
 func (k keyMap) FullHelp() [][]key.Binding {
@@ -98,14 +113,18 @@ func (h Model) IsVisible() bool {
 	return h.ShowHelp
 }
 
-func (h Model) RenderFull() string {
-	return h.Model.FullHelpView(h.Keys.FullHelp())
+func (h Model) MenuRender() string {
+	return h.Model.ShortHelpView(h.Keys.MenuKey())
 }
 
-// func (h Model) MenuRender() string {
-// 	return h.Model.ShortHelpView(h.Keys.MenuKey())
-// }
+func (h Model) EditorKeyRender() string {
+	return h.Model.ShortHelpView(h.Keys.EditorKey())
+}
 
-func (h Model) MenuRender() string {
-	return h.Model.FullHelpView(h.Keys.MenuKey())
+func (h Model) DeleteRender() string {
+	return h.Model.ShortHelpView(h.Keys.DeleteKey())
+}
+
+func (h Model) RenderFull() string {
+	return h.Model.FullHelpView(h.Keys.FullHelp())
 }

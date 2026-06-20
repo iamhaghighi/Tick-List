@@ -50,7 +50,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		case "delete":
 			if m.activeScreen == TodoScreen {
-				m.editor.Input.Placeholder = "y/N"
+				m.editor.Input.Placeholder = "  y - confirm to delete"
 
 				m.activeScreen = EditorScreen
 				m.editor.Mode = editor.DeleteMode
